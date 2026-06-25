@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodePath — Learn to Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --bg: #0D0F12;
+    --bg2: #13161B;
+    --bg3: #1A1E26;
+    --bg4: #222832;
+    --surface: #1E2330;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #F0F2F6;
+    --text2: #9AA3B2;
+    --text3: #636C7E;
+    --accent: #7C5CFC;
+    --accent2: #9B7FFF;
+    --accent-bg: rgba(124,92,252,0.12);
+    --green: #2DD4A0;
+    --green-bg: rgba(45,212,160,0.1);
+    --amber: #F59E0B;
+    --amber-bg: rgba(245,158,11,0.1);
+    --red: #F87171;
+    --red-bg: rgba(248,113,113,0.1);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+ 
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+  }
+ 
+  /* ---- NAV ---- */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); text-decoration: none; }
+  .logo-icon { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; font-weight: 600; color: #fff; }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-link { padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text2); border: none; background: none; transition: all .15s; }
+  .nav-link:hover, .nav-link.active { background: var(--bg3); color: var(--text); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #C084FC); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; }
+  .xp-badge { font-size: 12px; font-weight: 600; color: var(--amber); background: var(--amber-bg); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(245,158,11,0.2); }
+ 
+  /* ---- PAGES ---- */
+  .page { display: none; flex: 1; }
+  .page.active { display: flex; flex-direction: column; }
+ 
+  /* ---- HERO / HOME ---- */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    background: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(124,92,252,0.18) 0%, transparent 70%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .hero-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--accent2); background: var(--accent-bg); border: 1px solid rgba(124,92,252,0.25); border-radius: 20px; padding: 5px 14px; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: .06em; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.2rem; letter-spacing: -0.02em; }
+  .hero h1 span { color: var(--accent2); }
+  .hero p { font-size: 1.1rem; color: var(--text2); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius); font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #6B4CE8; transform: translateY(-1px); }
+  .btn-ghost { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); }
+  .btn-ghost:hover { background: var(--bg4); }
+ 
+  /* Stats row */
+  .stats-row { display: flex; justify-content: center; gap: 3rem; padding: 2.5rem 2rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--text); }
+  .stat-label { font-size: 13px; color: var(--text3); margin-top: 2px; }
+ 
+  /* Course cards */
+  .section { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .section-title { font-size: 1.2rem; font-weight: 700; }
+  .see-all { font-size: 13px; color: var(--accent2); cursor: pointer; background: none; border: none; font-weight: 500; }
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .course-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; cursor: pointer; transition: all .2s;
+  }
+  .course-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .course-thumb { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
+  .course-thumb.js { background: linear-gradient(135deg, #2a2005, #3d3008); }
+  .course-thumb.py { background: linear-gradient(135deg, #0a1f2e, #0d2c40); }
+  .course-thumb.react { background: linear-gradient(135deg, #0a1a2e, #0d1f38); }
+  .course-thumb.css { background: linear-gradient(135deg, #1a0a2e, #240d40); }
+  .course-lang { position: absolute; top: 10px; right: 10px; font-size: 11px; font-weight: 700; font-family: var(--mono); padding: 3px 8px; border-radius: 5px; }
+  .course-lang.js { background: #F59E0B22; color: var(--amber); border: 1px solid #F59E0B44; }
+  .course-lang.py { background: #378ADD22; color: #60AAEE; border: 1px solid #378ADD44; }
+  .course-lang.react { background: #2DD4A022; color: var(--green); border: 1px solid #2DD4A044; }
+  .course-lang.css { background: #C084FC22; color: #C084FC; border: 1px solid #C084FC44; }
+  .course-body { padding: 1rem; }
+  .course-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .course-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
+  .course-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text3); }
+  .course-progress { margin-top: 10px; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: var(--accent); transition: width .4s; }
+  .diff-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .diff-badge.beginner { background: var(--green-bg); color: var(--green); }
+  .diff-badge.intermediate { background: var(--amber-bg); color: var(--amber); }
+  .diff-badge.advanced { background: var(--red-bg); color: var(--red); }
+ 
+  /* ---- COURSE PLAYER ---- */
+  .player-layout { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 60px); }
+  .sidebar { width: 280px; min-width: 280px; background: var(--bg2); border-right: 1px solid var(--border); overflow-y: auto; }
+  .sidebar-head { padding: 1.25rem 1rem; border-bottom: 1px solid var(--border); }
+  .sidebar-course-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .sidebar-progress { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
+  .module-group { border-bottom: 1px solid var(--border); }
+  .module-title { padding: .75rem 1rem; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+  .module-title:hover { color: var(--text2); }
+  .lesson-item { display: flex; align-items: center; gap: 10px; padding: .6rem 1rem .6rem 1.5rem; font-size: 13px; cursor: pointer; color: var(--text2); transition: all .15s; border-left: 2px solid transparent; }
+  .lesson-item:hover { background: var(--bg3); color: var(--text); }
+  .lesson-item.active { background: var(--accent-bg); color: var(--accent2); border-left-color: var(--accent); }
+  .lesson-item.done { color: var(--text3); }
+  .lesson-icon { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--text3); display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; }
+  .lesson-icon.done { background: var(--green); border-color: var(--green); color: #000; font-weight: 700; }
+  .lesson-icon.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+ 
+  /* Player main */
+  .player-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .lesson-header { padding: 1.5rem 2rem 1rem; border-bottom: 1px solid var(--border); }
+  .lesson-breadcrumb { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+  .lesson-title { font-size: 1.4rem; font-weight: 700; }
+  .lesson-content { padding: 1.5rem 2rem; max-width: 820px; flex: 1; }
+  .lesson-content p { line-height: 1.8; color: var(--text2); margin-bottom: 1rem; font-size: 15px; }
+  .lesson-content h3 { font-size: 1rem; font-weight: 700; margin: 1.5rem 0 .6rem; color: var(--text); }
+  .code-block { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); padding: 1.25rem; font-family: var(--mono); font-size: 13px; line-height: 1.7; color: #C9D1D9; overflow-x: auto; margin: 1rem 0; position: relative; }
+  .code-label { position: absolute; top: 8px; right: 10px; font-size: 10px; font-weight: 700; font-family: var(--sans); text-transform: uppercase; letter-spacing: .06em; color: var(--text3); }
+  .code-kw { color: #FF7B72; }
+  .code-str { color: #A5D6FF; }
+  .code-fn { color: #D2A8FF; }
+  .code-num { color: #79C0FF; }
+  .code-cm { color: #6E7681; font-style: italic; }
+  .info-box { background: var(--accent-bg); border: 1px solid rgba(124,92,252,0.25); border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0; }
+  .info-box-title { font-size: 12px; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .info-box p { font-size: 13px; color: var(--text2); margin: 0; line-height: 1.6; }
+ 
+  /* Quiz */
+  .quiz-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin: 1.5rem 0; }
+  .quiz-question { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt { display: flex; align-items: center; gap: 12px; padding: .75rem 1rem; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; font-size: 14px; color: var(--text2); transition: all .15s; }
+  .quiz-opt:hover { border-color: var(--border2); color: var(--text); }
+  .quiz-opt.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .quiz-opt.wrong { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+  .quiz-opt.selected { border-color: var(--accent); color: var(--accent2); background: var(--accent-bg); }
+  .quiz-feedback { margin-top: 1rem; font-size: 13px; padding: .75rem 1rem; border-radius: var(--radius); }
+  .quiz-feedback.correct { background: var(--green-bg); color: var(--green); }
+  .quiz-feedback.wrong { background: var(--red-bg); color: var(--red); }
+ 
+  /* Lesson nav */
+  .lesson-nav { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; border-top: 1px solid var(--border); margin-top: auto; }
+ 
+  /* ---- DASHBOARD ---- */
+  .dashboard { padding: 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .dash-greeting { margin-bottom: 2rem; }
+  .dash-greeting h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  .dash-greeting p { color: var(--text2); font-size: 14px; }
+  .dash-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 2rem; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
+  .metric-label { font-size: 12px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .metric-value { font-size: 2rem; font-weight: 700; }
+  .metric-value.accent { color: var(--accent2); }
+  .metric-value.green { color: var(--green); }
+  .metric-value.amber { color: var(--amber); }
+  .metric-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .streak-bar { display: flex; gap: 5px; margin-top: 12px; }
+  .streak-day { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; background: var(--bg3); color: var(--text3); }
+  .streak-day.done { background: var(--accent-bg); color: var(--accent2); border: 1px solid rgba(124,92,252,.3); }
+  .streak-day.today { background: var(--accent); color: #fff; }
+  .dash-cols { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+  .dash-section-title { font-size: 14px; font-weight: 700; margin-bottom: 1rem; }
+  .enroll-row { display: flex; align-items: center; gap: 12px; padding: .85rem; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; cursor: pointer; transition: all .15s; }
+  .enroll-row:hover { border-color: var(--border2); }
+  .enroll-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .enroll-info { flex: 1; min-width: 0; }
+  .enroll-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .enroll-prog { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+  .activity-list { }
+  .activity-item { display: flex; align-items: flex-start; gap: 10px; padding: .75rem 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .activity-dot.green { background: var(--green); }
+  .activity-dot.accent { background: var(--accent); }
+  .activity-dot.amber { background: var(--amber); }
+  .activity-text { color: var(--text2); line-height: 1.5; }
+  .activity-time { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .cert-card { background: linear-gradient(135deg, #1a1030, #0d1a30); border: 1px solid rgba(124,92,252,.2); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 8px; }
+  .cert-name { font-size: 14px; font-weight: 700; color: var(--accent2); margin-bottom: 4px; }
+  .cert-sub { font-size: 12px; color: var(--text3); }
+ 
+  /* Responsive */
+  @media (max-width: 768px) {
+    .dash-grid { grid-template-columns: 1fr 1fr; }
+    .dash-cols { grid-template-columns: 1fr; }
+    .player-layout { flex-direction: column; }
+    .sidebar { width: 100%; min-width: 0; height: 200px; overflow-y: auto; }
+    .stats-row { gap: 1.5rem; }
+    .course-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+ 
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-icon">&lt;/&gt;</div>
+    CodePath
+  </a>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Explore</button>
+    <button class="nav-link" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="nav-link" onclick="openCourse()">My Courses</button>
+  </div>
+  <div class="nav-right">
+    <span class="xp-badge">⚡ 1,240 XP</span>
+    <div class="avatar" title="Alex K.">AK</div>
+  </div>
+</nav>
+ 
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-tag">✦ New: AI-Powered Code Review</div>
+    <h1>Master coding with<br><span>structured, hands-on</span> paths</h1>
+    <p>From your first variable to full-stack apps — CodePath gives you a clear road, real projects, and instant feedback at every step.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="openCourse()">▶ Start Learning Free</button>
+      <button class="btn btn-ghost" onclick="showPage('dashboard')">View Dashboard</button>
+    </div>
+  </div>
+ 
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">48</div><div class="stat-label">Courses</div></div>
+    <div class="stat"><div class="stat-num">320+</div><div class="stat-label">Lessons</div></div>
+    <div class="stat"><div class="stat-num">18k</div><div class="stat-label">Students</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Avg Rating</div></div>
+  </div>
+ 
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Continue Learning</div>
+    </div>
+    <div class="course-grid">
+      <div class="course-card" onclick="openCourse()">
+        <div class="course-thumb js">🟡<span class="course-lang js">JS</span></div>
+        <div class="course-body">
+          <div class="course-title">JavaScript Fundamentals</div>
+          <div class="course-desc">Variables, functions, DOM manipulation and async programming.</div>
+          <div class="course-progress">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px"><span>Lesson 4 of 12</span><span>32%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:32%"></div></div>
+          </div>
+          <div class="course-meta" style="margin-top:10px">
+            <span class="diff-badge beginner">Beginner</span>
+            <span>6h 30m total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div class="section-title">All Courses</div>
+    </div>
+    <div class="course-grid">
+      <div class="course-card" onclick="openCourse()">
+        <div class="course-thumb js">🟡<span class="course-lang js">JS</span></div>
+        <div class="course-body">
+          <div class="course-title">JavaScript Fundamentals</div>
+          <div class="course-desc">Variables, functions, DOM manipulation and async programming.</div>
+          <div class="course-meta" style="margin-top:10px">
+            <span class="diff-badge beginner">Beginner</span><span>6h 30m</span>
+          </div>
+        </div>
+      </div>
+      <div class="course-card" onclick="openCourse()">
+        <div class="course-thumb py">🐍<span class="course-lang py">PY</span></div>
+        <div class="course-body">
+          <div class="course-title">Python for Data Science</div>
+          <div class="course-desc">Pandas, NumPy, visualization and intro to machine learning.</div>
+          <div class="course-meta" style="margin-top:10px">
+            <span class="diff-badge intermediate">Intermediate</span><span>9h 15m</span>
+          </div>
+        </div>
+      </div>
+      <div class="course-card" onclick="openCourse()">
+        <div class="course-thumb react">⚛️<span class="course-lang react">JSX</span></div>
+        <div class="course-body">
+          <div class="course-title">React — Build Modern UIs</div>
+          <div class="course-desc">Components, hooks, state management, and deploying apps.</div>
+          <div class="course-meta" style="margin-top:10px">
+            <span class="diff-badge intermediate">Intermediate</span><span>11h</span>
+          </div>
+        </div>
+      </div>
+      <div class="course-card" onclick="openCourse()">
+        <div class="course-thumb css">🎨<span class="course-lang css">CSS</span></div>
+        <div class="course-body">
+          <div class="course-title">CSS Mastery & Animations</div>
+          <div class="course-desc">Flexbox, Grid, custom properties, and smooth animations.</div>
+          <div class="course-meta" style="margin-top:10px">
+            <span class="diff-badge beginner">Beginner</span><span>5h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- COURSE PLAYER PAGE -->
+<div class="page" id="page-player">
+  <div class="player-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-head">
+        <div class="sidebar-course-title">JavaScript Fundamentals</div>
+        <div class="sidebar-progress">4 of 12 lessons complete</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:32%"></div></div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">01 — Getting Started <span>▾</span></div>
+        <div class="lesson-item done" onclick="loadLesson(0)">
+          <div class="lesson-icon done">✓</div> What is JavaScript?
+        </div>
+        <div class="lesson-item done" onclick="loadLesson(1)">
+          <div class="lesson-icon done">✓</div> Setting up your environment
+        </div>
+        <div class="lesson-item done" onclick="loadLesson(2)">
+          <div class="lesson-icon done">✓</div> Your first script
+        </div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">02 — Core Concepts <span>▾</span></div>
+        <div class="lesson-item active" id="lesson-3" onclick="loadLesson(3)">
+          <div class="lesson-icon active">▶</div> Variables & Data Types
+        </div>
+        <div class="lesson-item" onclick="loadLesson(4)">
+          <div class="lesson-icon">5</div> Functions & Scope
+        </div>
+        <div class="lesson-item" onclick="loadLesson(5)">
+          <div class="lesson-icon">6</div> Arrays & Objects
+        </div>
+        <div class="lesson-item" onclick="loadLesson(6)">
+          <div class="lesson-icon">7</div> Control Flow
+        </div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">03 — The DOM <span>▾</span></div>
+        <div class="lesson-item" onclick="loadLesson(7)"><div class="lesson-icon">8</div> Selecting elements</div>
+        <div class="lesson-item" onclick="loadLesson(8)"><div class="lesson-icon">9</div> Events & listeners</div>
+        <div class="lesson-item" onclick="loadLesson(9)"><div class="lesson-icon">10</div> Manipulating the DOM</div>
+      </div>
+      <div class="module-group">
+        <div class="module-title">04 — Async JS <span>▾</span></div>
+        <div class="lesson-item" onclick="loadLesson(10)"><div class="lesson-icon">11</div> Promises & async/await</div>
+        <div class="lesson-item" onclick="loadLesson(11)"><div class="lesson-icon">12</div> Fetch API & REST</div>
+      </div>
+    </div>
+ 
+    <!-- Main content -->
+    <div class="player-main">
+      <div class="lesson-header">
+        <div class="lesson-breadcrumb">JavaScript Fundamentals › Module 2 — Core Concepts</div>
+        <div class="lesson-title" id="lesson-heading">Variables & Data Types</div>
+      </div>
+ 
+      <div class="lesson-content" id="lesson-body">
+        <p>In JavaScript, <strong>variables</strong> are named containers that store data values. Modern JavaScript uses <code style="font-family:var(--mono);font-size:13px;background:var(--bg);padding:2px 6px;border-radius:4px;color:#A5D6FF">let</code> and <code style="font-family:var(--mono);font-size:13px;background:var(--bg);padding:2px 6px;border-radius:4px;color:#A5D6FF">const</code> — the older <code style="font-family:var(--mono);font-size:13px;background:var(--bg);padding:2px 6px;border-radius:4px;color:#A5D6FF">var</code> is best avoided in new code.</p>
+ 
+        <h3>Declaring variables</h3>
+        <p>Use <code style="font-family:var(--mono);font-size:13px;background:var(--bg);padding:2px 6px;border-radius:4px;color:#A5D6FF">const</code> by default. Switch to <code style="font-family:var(--mono);font-size:13px;background:var(--bg);padding:2px 6px;border-radius:4px;color:#A5D6FF">let</code> only when you know the value will change.</p>
+ 
+        <div class="code-block">
+<span class="code-cm">// const — value cannot be reassigned</span>
+<span class="code-kw">const</span> name = <span class="code-str">"Alice"</span>;
+<span class="code-kw">const</span> age  = <span class="code-num">28</span>;
+ 
+<span class="code-cm">// let — value can change</span>
+<span class="code-kw">let</span> score = <span class="code-num">0</span>;
+score = <span class="code-num">42</span>; <span class="code-cm">// ✓ allowed</span>
+<span class="code-label">JS</span>
+        </div>
+ 
+        <h3>The 6 primitive types</h3>
+        <p>Every value in JavaScript belongs to a type. Primitives are the simplest building blocks.</p>
+ 
+        <div class="code-block">
+<span class="code-kw">const</span> text    = <span class="code-str">"hello"</span>;       <span class="code-cm">// string</span>
+<span class="code-kw">const</span> count   = <span class="code-num">42</span>;           <span class="code-cm">// number</span>
+<span class="code-kw">const</span> pi      = <span class="code-num">3.14</span>;         <span class="code-cm">// number (no float type)</span>
+<span class="code-kw">const</span> active  = <span class="code-num">true</span>;         <span class="code-cm">// boolean</span>
+<span class="code-kw">const</span> nothing = <span class="code-num">null</span>;         <span class="code-cm">// null — intentional absence</span>
+<span class="code-kw">let</span>   ghost;                   <span class="code-cm">// undefined — not yet set</span>
+<span class="code-label">JS</span>
+        </div>
+ 
+        <div class="info-box">
+          <div class="info-box-title">💡 Tip</div>
+          <p>Use <code style="font-family:var(--mono);font-size:12px">typeof</code> to inspect a value's type at runtime: <code style="font-family:var(--mono);font-size:12px">typeof "hello"</code> returns <code style="font-family:var(--mono);font-size:12px">"string"</code>. This is handy when debugging.</p>
+        </div>
+ 
+        <h3>Type coercion — watch out!</h3>
+        <p>JavaScript will silently convert types when you mix them in operations. This catches many beginners off guard.</p>
+ 
+        <div class="code-block">
+<span class="code-fn">console</span>.<span class="code-fn">log</span>(<span class="code-str">"5"</span> + <span class="code-num">3</span>);   <span class="code-cm">// "53"  (string wins in +)</span>
+<span class="code-fn">console</span>.<span class="code-fn">log</span>(<span class="code-str">"5"</span> - <span class="code-num">3</span>);   <span class="code-cm">// 2    (number for - * /)</span>
+<span class="code-fn">console</span>.<span class="code-fn">log</span>(<span class="code-num">0</span> == <span class="code-str">""</span>);    <span class="code-cm">// true  (loose equality)</span>
+<span class="code-fn">console</span>.<span class="code-fn">log</span>(<span class="code-num">0</span> === <span class="code-str">""</span>);   <span class="code-cm">// false (strict — always use this)</span>
+<span class="code-label">JS</span>
+        </div>
+ 
+        <!-- Quiz -->
+        <div class="quiz-block" id="quiz">
+          <div class="quiz-question">🧠 Quick check: Which keyword should you use when a value will never change?</div>
+          <div class="quiz-options" id="quiz-opts">
+            <div class="quiz-opt" onclick="answerQuiz(this, false)"><span>A</span> var</div>
+            <div class="quiz-opt" onclick="answerQuiz(this, false)"><span>B</span> let</div>
+            <div class="quiz-opt" onclick="answerQuiz(this, true)"><span>C</span> const</div>
+            <div class="quiz-opt" onclick="answerQuiz(this, false)"><span>D</span> define</div>
+          </div>
+          <div class="quiz-feedback" id="quiz-feedback" style="display:none"></div>
+        </div>
+      </div>
+ 
+      <div class="lesson-nav">
+        <button class="btn btn-ghost" onclick="prevLesson()">← Previous</button>
+        <span style="font-size:13px;color:var(--text3)">Lesson 4 of 12</span>
+        <button class="btn btn-primary" onclick="nextLesson()" id="next-btn">Next Lesson →</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- DASHBOARD PAGE -->
+<div class="page" id="page-dashboard">
+  <div class="dashboard">
+    <div class="dash-greeting">
+      <h2>Welcome back, Alex 👋</h2>
+      <p>You're on a 5-day streak — keep it up!</p>
+    </div>
+ 
+    <div class="dash-grid">
+      <div class="metric-card">
+        <div class="metric-label">Total XP</div>
+        <div class="metric-value accent">1,240</div>
+        <div class="metric-sub">+180 this week</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Lessons Done</div>
+        <div class="metric-value green">23</div>
+        <div class="metric-sub">across 2 courses</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Day Streak</div>
+        <div class="metric-value amber">5 🔥</div>
+        <div class="streak-bar">
+          <div class="streak-day done">M</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day done">W</div>
+          <div class="streak-day done">T</div>
+          <div class="streak-day today">F</div>
+          <div class="streak-day">S</div>
+          <div class="streak-day">S</div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="dash-cols">
+      <div>
+        <div class="dash-section-title">Your Courses</div>
+        <div class="enroll-row" onclick="openCourse()">
+          <div class="enroll-icon" style="background:#2a2005">🟡</div>
+          <div class="enroll-info">
+            <div class="enroll-name">JavaScript Fundamentals</div>
+            <div class="enroll-prog">4 / 12 lessons • 32%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:32%"></div></div>
+          </div>
+        </div>
+        <div class="enroll-row" onclick="openCourse()">
+          <div class="enroll-icon" style="background:#0a1f2e">🐍</div>
+          <div class="enroll-info">
+            <div class="enroll-name">Python for Data Science</div>
+            <div class="enroll-prog">11 / 20 lessons • 55%</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+          </div>
+        </div>
+ 
+        <div class="dash-section-title" style="margin-top:2rem">Certificates Earned</div>
+        <div class="cert-card">
+          <div class="cert-name">🏆 HTML & CSS Foundations</div>
+          <div class="cert-sub">Earned June 10, 2025 • Verified</div>
+        </div>
+      </div>
+ 
+      <div>
+        <div class="dash-section-title">Recent Activity</div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div>
+              <div class="activity-text">Completed <strong>Your first script</strong></div>
+              <div class="activity-time">Today, 10:42 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot accent"></div>
+            <div>
+              <div class="activity-text">Scored 100% on Module 1 quiz</div>
+              <div class="activity-time">Today, 10:30 AM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div>
+              <div class="activity-text">Completed <strong>Setting up your environment</strong></div>
+              <div class="activity-time">Yesterday, 9:15 PM</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot amber"></div>
+            <div>
+              <div class="activity-text">Started JavaScript Fundamentals</div>
+              <div class="activity-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot green"></div>
+            <div>
+              <div class="activity-text">Earned certificate: HTML & CSS</div>
+              <div class="activity-time">June 10, 2025</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    const map = { home: 0, dashboard: 1 };
+    const links = document.querySelectorAll('.nav-link');
+    if (map[id] !== undefined) links[map[id]].classList.add('active');
+  }
+ 
+  function openCourse() {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('page-player').classList.add('active');
+  }
+ 
+  let quizDone = false;
+  function answerQuiz(el, correct) {
+    if (quizDone) return;
+    quizDone = true;
+    const fb = document.getElementById('quiz-feedback');
+    document.querySelectorAll('.quiz-opt').forEach(o => o.style.pointerEvents = 'none');
+    if (correct) {
+      el.classList.add('correct');
+      fb.textContent = '✓ Correct! const declares a value that cannot be reassigned.';
+      fb.className = 'quiz-feedback correct';
+    } else {
+      el.classList.add('wrong');
+      document.querySelectorAll('.quiz-opt')[2].classList.add('correct');
+      fb.textContent = '✗ Not quite. const is the right choice for values that never change.';
+      fb.className = 'quiz-feedback wrong';
+    }
+    fb.style.display = 'block';
+  }
+ 
+  const lessons = [
+    'What is JavaScript?',
+    'Setting Up Your Environment',
+    'Your First Script',
+    'Variables & Data Types',
+    'Functions & Scope',
+    'Arrays & Objects',
+    'Control Flow',
+    'Selecting Elements',
+    'Events & Listeners',
+    'Manipulating the DOM',
+    'Promises & async/await',
+    'Fetch API & REST'
+  ];
+ 
+  let currentLesson = 3;
+ 
+  function loadLesson(idx) {
+    currentLesson = idx;
+    document.getElementById('lesson-heading').textContent = lessons[idx];
+    document.querySelectorAll('.lesson-item').forEach((el, i) => {
+      el.classList.remove('active');
+      const icon = el.querySelector('.lesson-icon');
+      if (i < 3) { el.classList.add('done'); icon.className = 'lesson-icon done'; icon.textContent = '✓'; }
+      else if (i === idx) { el.classList.add('active'); icon.className = 'lesson-icon active'; icon.textContent = '▶'; }
+      else { icon.className = 'lesson-icon'; icon.textContent = i + 1; }
+    });
+  }
+ 
+  function nextLesson() {
+    if (currentLesson < lessons.length - 1) loadLesson(currentLesson + 1);
+  }
+  function prevLesson() {
+    if (currentLesson > 0) loadLesson(currentLesson - 1);
+  }
+</script>
+</body>
+</html>
+ 
